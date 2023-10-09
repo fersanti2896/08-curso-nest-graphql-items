@@ -1,15 +1,12 @@
 # Anylist - Usuarios y Enumeraciones - Admin Roles
 
-Se continua con el `Backend` de Items, ahora con la creación de usuarios y enumeraciones, los temas que se ven son: 
+Se continua con el `Backend` de Items, ahora con la creación de items y vinculación con los usuarios. Los temas que se ven son: 
 
-- Relaciones `ManyToOne` a la misma tabla.
-- Actualización de usuarios.
-- Bloqueo de usuarios.
-- Protección del `GqlSchema`.
-- Módulo asíncronos.
-- `Factory functions`.
-- Uso de módulos en `factory functions`.
-- Roles y actualización de usuario que modifica registros.
+- Relaciones user-item.
+- Validaciones.
+- Consultas por usuario.
+- Creación de índices.
+- Uso de `LazyRelationships`.
 
 ### Pasos para iniciar API
 
