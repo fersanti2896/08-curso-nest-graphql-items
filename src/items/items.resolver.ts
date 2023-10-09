@@ -1,5 +1,5 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
+import { UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './entities/item.entity';
 import { User } from '../users/entities/user.entity';
@@ -22,13 +22,16 @@ export class ItemsResolver {
   }
 
   @Query(() => [ Item ], { name: 'items' })
-  async findAll(): Promise<Item[]> {
-    return this.itemsService.findAll();
+  async findAll( @CurrentUser() user: User  ): Promise<Item[]> {
+    return this.itemsService.findAll( user );
   }
 
   @Query(() => Item, { name: 'item' })
-  async findOne( @Args() { id }: IdentificadorArgs ): Promise<Item> {
-    return this.itemsService.findOne({ id });
+  async findOne( 
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string, 
+    @CurrentUser() user: User
+  ): Promise<Item> {
+    return this.itemsService.findOne(id, user);
   }
 
   @Mutation(() => Item)
@@ -39,7 +42,10 @@ export class ItemsResolver {
   }
 
   @Mutation(() => Item)
-  removeItem( @Args() { id }: IdentificadorArgs ): Promise<Item> {
-    return this.itemsService.remove({ id });
+  removeItem( 
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string, 
+    @CurrentUser() user: User 
+  ): Promise<Item> {
+    return this.itemsService.remove(id, user);
   }
 }

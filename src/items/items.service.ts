@@ -19,16 +19,25 @@ export class ItemsService {
     return await this.itemsRepository.save( newItem );
   }
 
-  async findAll(): Promise<Item[]> {
+  async findAll( user: User ): Promise<Item[]> {
     // TODO: Filtrar, paginar, por usuario
 
-    return this.itemsRepository.find();
+    return this.itemsRepository.find({
+      where: {
+        user: { id: user.id }
+      }
+    });
   }
 
-  async findOne( id: IdentificadorArgs ): Promise<Item> {
-    const item = await this.itemsRepository.findOneBy(id);
+  async findOne( id: string, user: User ): Promise<Item> {
+    const item = await this.itemsRepository.findOneBy({
+        id: id,
+        user: { id: user.id }
+    });
 
-    if( !item ) throw new NotFoundException(`El item con el id: ${ id.id } no fue encontrado.`);
+    if( !item ) throw new NotFoundException(`El item con el id: ${ id } no fue encontrado.`);
+
+    // item.user = user;
 
     return item;
   }
@@ -41,12 +50,12 @@ export class ItemsService {
     return this.itemsRepository.save( item );
   }
 
-  async remove( id: IdentificadorArgs ): Promise<Item> {
+  async remove( id: string, user: User ): Promise<Item> {
     // TODO: Soft delete, intregidad referencial
-    const item = await this.findOne(id);
+    const item = await this.findOne(id, user);
 
     await this.itemsRepository.remove( item );
 
-    return { ...item, id: id.id };
+    return { ...item, id: id };
   }
 }

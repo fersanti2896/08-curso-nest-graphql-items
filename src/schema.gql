@@ -29,10 +29,7 @@ type Query {
   users(roles: [ValidRoles!] = []): [User!]!
   user(id: ID!): User!
   items: [Item!]!
-  item(
-    """Identificador del item."""
-    id: ID!
-  ): Item!
+  item(id: ID!): Item!
 }
 
 """Roles permitidos."""
@@ -49,10 +46,7 @@ type Mutation {
   blockUser(id: ID!): User!
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
-  removeItem(
-    """Identificador del item."""
-    id: ID!
-  ): Item!
+  removeItem(id: ID!): Item!
 }
 
 input SingUpInput {
